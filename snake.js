@@ -106,19 +106,17 @@
 			}
 
 			if(current !== head)current.prev.next = undefined;
-
-			console.log(current.x + " " + current.y);
 		}
 		insertTail();
-		head.x = getNext(dir).x;
-		head.y = getNext(dir).y;
+		head.x = Math.floor(getNext(dir).x);
+		head.y = Math.floor(getNext(dir).y);
 	}
 
 	function insertTail()
 	{
 		var temp = Object.create(tail);
-		temp.x = head.x;
-		temp.y = head.y;
+		temp.x = Math.floor(head.x);
+		temp.y = Math.floor(head.y);
 		if(typeof head.next === 'undefined')
 		{
 			head.next = temp;
@@ -135,10 +133,7 @@
 
 	function eat()
 	{
-		food.x = Math.floor(Math.random() * width);
-		food.y = Math.floor(Math.random() * height);
-		gameView.fillStyle="#00FF00";
-		gameView.fillRect(food.x * 768/width, food.y * 768/height, 768/width, 768/height);
+		spawnFood();
 	}
 
 	function getNext(dir)
@@ -193,17 +188,12 @@
 	{
 		food.x = Math.floor(Math.random() * width);
 		food.y = Math.floor(Math.random() * height);
-		gameView.fillStyle="#00FF00";
-		gameView.fillRect(food.x * 768/width, food.y * 768/height, 768/width, 768/height);
+
+		var length = 1;
 
 		if(head.x === food.x && head.y === food.y)
 		{
-			if(typeof food.x !== 'undefined')
-			{
-				gameView.fillStyle="#000000";
-				gameView.fillRect(food.x * 768/width - 1, food.y * 768/height - 1, 768/width + 2, 768/height + 2);
-			}
-			spawnFood();
+			return spawnFood();
 		}
 		else
 		{
@@ -211,17 +201,15 @@
 			while(current.next !== undefined)
 			{
 				current = current.next;
-				if(Math.floor(food.x) == Math.floor(current.x) && Math.floor(food.y) == Math.floor(current.y))
+				length++;
+				if(food.x == current.x && food.y == current.y)
 				{
-					if(typeof food.x !== 'undefined')
-					{
-						gameView.fillStyle="#000000";
-						gameView.fillRect(food.x * 768/width - 1, food.y * 768/height - 1, 768/width + 2, 768/height + 2);
-					}
-					spawnFood();
+					return spawnFood();
 				}
 			}
 		}
+
+		console.log(length);
 	}
 
 	function keydown(event)
@@ -242,44 +230,4 @@
 				break;
 		}
 	};
-
-	function hex()
-	{
-		var val = Math.floor(Math.random() * 16);
-		switch(val)
-		{
-			case 0:
-				return '0';
-			case 1:
-				return '1';
-			case 2:
-				return '2';
-			case 3:
-				return '3';
-			case 4:
-				return '4';
-			case 5:
-				return '5';
-			case 6:
-				return '6';
-			case 7:
-				return '7';
-			case 8:
-				return '8';
-			case 9:
-				return '9';
-			case 10:
-				return 'A';
-			case 11:
-				return 'B';
-			case 12:
-				return 'C';
-			case 13:
-				return 'D';
-			case 14:
-				return 'E';
-			case 15:
-				return 'F';
-		}
-	}
 }());
